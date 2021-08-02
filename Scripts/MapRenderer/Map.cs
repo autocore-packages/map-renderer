@@ -127,14 +127,14 @@ namespace MapRenderer
             green.GetComponent<MeshRenderer>().material = greenMaterial;
 
 
-            LineMaterial = new Material(Shader.Find("Standard"));
-            LineMaterial.EnableKeyword("_EMISSION");
+            //LineMaterial = new Material(Shader.Find("Standard"));
+            //LineMaterial.EnableKeyword("_EMISSION");
 
-            LineStopMaterial = new Material(Shader.Find("Standard"));
-            LineStopMaterial.EnableKeyword("_EMISSION");
+            //LineStopMaterial = new Material(Shader.Find("Standard"));
+            //LineStopMaterial.EnableKeyword("_EMISSION");
 
-            LineLaneMaterial = new Material(Shader.Find("Standard"));
-            LineStopMaterial.EnableKeyword("_EMISSION");
+            //LineLaneMaterial = new Material(Shader.Find("Standard"));
+            //LineStopMaterial.EnableKeyword("_EMISSION");
 
             goLine = new GameObject("goLine");
 
@@ -209,7 +209,6 @@ namespace MapRenderer
             }
             Line line = Instantiate(goLine).AddComponent<Line>();
             line.name = name;
-            line.elemenrMaterial = LineMaterial;
             AddLine(line);
             return line;
         }
@@ -222,7 +221,6 @@ namespace MapRenderer
             }
             Line_Stop line = Instantiate(goLine).AddComponent<Line_Stop>();
             line.name = name;
-            line.elemenrMaterial = LineStopMaterial;
             AddLine(line);
             return line;
         }
