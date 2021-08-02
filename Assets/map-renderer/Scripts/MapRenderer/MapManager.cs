@@ -11,7 +11,9 @@ namespace MapRenderer
     {
         public static MapManager Instance;
 
-        public Action<string> OnGetMapData;
+        public Action<string> OnGetOSM;
+
+        public Action<string> OnGetOpenDrive;
 
         public List<Map> mapList;
 
@@ -52,8 +54,16 @@ namespace MapRenderer
             {
                 // Show results as text
                 string content = www.downloadHandler.text;
-                Debug.Log(content);
-                OnGetMapData.Invoke(content);
+                if (url.EndsWith(".osm")) 
+                {
+                    Debug.Log("osm");
+                    OnGetOSM.Invoke(content); 
+                }
+                else if (url.EndsWith(".xodr"))
+                {
+                    Debug.Log("xodr");
+                    OnGetOpenDrive.Invoke(content);
+                }
             }
         }
     }

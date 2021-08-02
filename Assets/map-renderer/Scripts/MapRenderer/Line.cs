@@ -13,6 +13,8 @@ namespace MapRenderer
 
         public override void ElementUpdateRenderer()
         {
+            elemenrMaterial = new Material(Shader.Find("Standard"));
+            elemenrMaterial.EnableKeyword("_EMISSION");
             lineRenderer = gameObject.AddComponent<LineRenderer>();
             lineRenderer.positionCount = points.Count;
             lineRenderer.startWidth = lineWidth;

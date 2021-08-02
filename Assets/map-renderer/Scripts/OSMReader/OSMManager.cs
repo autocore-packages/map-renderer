@@ -16,7 +16,7 @@ namespace assets.OSMReader
         public void Start()
         {
             mapManager = GetComponent<MapManager>();
-            MapManager.Instance.OnGetMapData += ReadOSMWithStr;
+            MapManager.Instance.OnGetOSM += ReadOSMWithStr;
         }
         public Map map;
 
