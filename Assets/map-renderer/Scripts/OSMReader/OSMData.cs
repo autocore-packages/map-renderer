@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
+using System.Runtime.InteropServices;
 namespace assets.OSMReader
 {
 
     public class OSMBase
     {
-        public ulong ID;
+        public long ID;
         protected T GetAttribute<T>(string attName, XmlAttributeCollection attributes)
         {
             string strValue = attributes[attName].Value;
@@ -28,11 +29,21 @@ namespace assets.OSMReader
         }
         public OsmNode() { }
 
+        [DllImport("GeographicWarpper")]
+        extern static void UTMUPS_Forward(double lat, double lon, out int zone, out bool northp, out double x, out double y);
         public OsmNode(XmlNode node)
         {
-            ID = GetAttribute<ulong>("id", node.Attributes);
+            ID =GetAttribute<long>("id", node.Attributes);
             Latitude = GetAttribute<float>("lat", node.Attributes);
             Longitude = GetAttribute<float>("lon", node.Attributes);
+            if (OSMManager.Instance.isLongitude)
+            {
+                UTMUPS_Forward(Latitude, Longitude, out int zone, out bool northp, out double x, out double y);
+                x %= 1e5;
+                y %= 1e5;
+                Latitude = (float)x;
+                Longitude = (float)y;
+            }
             XmlNodeList tags = node.SelectNodes("tag");
             foreach (XmlNode t in tags)
             {
@@ -54,13 +65,14 @@ namespace assets.OSMReader
         }
         public Vector3 GetPosition()
         {
-            return new Vector3(local_x, ele, local_y);
+            //return new Vector3(local_x, ele, local_y);
+            return new Vector3(Latitude, ele, Longitude);
         }
     }
     public class OSMWay : OSMBase
     {
         public bool Visible { get; private set; }
-        public List<ulong> NodeIDs { get; private set; }
+        public List<long> NodeIDs { get; private set; }
         public bool IsBoundary { get; private set; }
         public bool IsBuilding { get; private set; }
         public bool IsRoad { get; private set; }
@@ -80,26 +92,35 @@ namespace assets.OSMReader
             solid,
             dashed,
             stop_sign,
-            parking
+            parking, 
+            parking_spot,
+            parking_access, 
+            Floors, 
+            Kerbs,
+            Columns,
+            Walls,
+            Windows,
+            Doors,
+            junction
         }
         public WayType OSMWayType { get; private set; }
         public WaySubType OSMSubType { get; private set; }
         public float height;
         public OSMWay()
         {
-            NodeIDs = new List<ulong>();
+            NodeIDs = new List<long>();
         }
 
         public OSMWay(XmlNode node)
         {
-            NodeIDs = new List<ulong>();
-            ID = GetAttribute<ulong>("id", node.Attributes);
-            //Visible = GetAttribute<bool>("visible", node.Attributes);
+            NodeIDs = new List<long>();
+            ID = GetAttribute<long>("id", node.Attributes);
+            Visible = GetAttribute<bool>("visible", node.Attributes);
             XmlNodeList nds = node.SelectNodes("nd");
 
             foreach (XmlNode n in nds)
             {
-                ulong refNo = GetAttribute<ulong>("ref", n.Attributes);
+                long refNo = GetAttribute<long>("ref", n.Attributes);
                 NodeIDs.Add(refNo);
             }
             if (NodeIDs.Count >= 3)

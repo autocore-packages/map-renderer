@@ -676,20 +676,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapManager: {fileID: 0}
   map: {fileID: 0}
-  openDrive:
-    header:
-      revMajor: 0
-      revMinor: 0
-      name: 
-      version: 0
-      date: 
-      north: 0
-      south: 0
-      east: 0
-      west: 0
-    roads: []
-    controllers: []
-    junctions: []
 --- !u!114 &781901139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -703,6 +689,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapManager: {fileID: 0}
+  isLongitude: 1
   map: {fileID: 0}
 --- !u!1 &840662076
 GameObject:
@@ -1215,10 +1202,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8488c99617abeeb4daa8b6f6a603eab9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  path: C:/Users/BaoBao/Documents/GitHub/map-renderer/Assets/StreamingAssets\cloverleaf.xodr
+  path: C:/Users/BaoBao/Documents/GitHub/map-renderer/Assets/StreamingAssets\autonomoustuff_parking_lot.osm
   buttonRender: {fileID: 2098962786}
   inputFieldPath: {fileID: 1180737214}
   inputFieldURL: {fileID: 254160972}
+  text: {fileID: 0}
 --- !u!114 &1986739973
 MonoBehaviour:
   m_ObjectHideFlags: 0

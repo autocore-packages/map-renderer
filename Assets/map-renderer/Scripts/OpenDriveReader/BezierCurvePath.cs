@@ -19,17 +19,13 @@ namespace assets.OpenDriveReader
     public class BezierCurvePath : MonoBehaviour
     {
         public List<BezierCurveData> curveDatas = new List<BezierCurveData>();
-
-        public List<Vector3> archors=new List<Vector3>();
+        public List<Transform> archors = new List<Transform>();
+        public List<Vector3> archorPoss=new List<Vector3>();
         public List<Vector3> archorsRight = new List<Vector3>();
-        public List<PathFragment> pathFragments = new List<PathFragment>();
         private readonly float HALF_PI = 0.5f * Mathf.PI;
         public float curveGranularity = 100f;
-        public float cubeThickness = 100;
+        public float pathLenth;
         public List<LaneAttribute> laneAttributes=new List<LaneAttribute>();
-        public int leftCount;
-        public int rightCount;
-        public float pathWidth;
 
         public void Generator(float x, float y, float len, float angle, float curvature)
         {
@@ -82,8 +78,8 @@ namespace assets.OpenDriveReader
                 float yEnd = len * Mathf.Sin(angle);
                 Vector3 startPos = new Vector3(x, 0.1f, y);
                 Vector3 endPos = new Vector3(x + xEnd, 0.1f, y + yEnd);
-                archors.Add(startPos);
-                archors.Add(endPos);
+                archorPoss.Add(startPos);
+                archorPoss.Add(endPos);
             }
             else
             {
@@ -112,7 +108,7 @@ namespace assets.OpenDriveReader
                 {
                     startAngle = startAngle + 0.05f;
                     Vector3 second_vector = GetCurvePart(startAngle, r - 10, centerX, centerY);
-                    BezierCurveData curve_new = new BezierCurveData();
+                    BezierCurveData curve_new;
                     count++;
                     distance += Vector3.Distance(start_vector, second_vector);
 
@@ -120,32 +116,27 @@ namespace assets.OpenDriveReader
                     {
                         curve_new = GetNewCurve(start_vector, end_vector);
                         curveDatas.Add(curve_new);
-                        archors.Add(end_vector);
+                        archorPoss.Add(end_vector);
                         break;
                     }
                     curve_new = GetNewCurve(start_vector, second_vector);
                     curveDatas.Add(curve_new);
-                    archors.Add(start_vector);
+                    archorPoss.Add(start_vector);
                     start_vector = second_vector;
                 }
 
             }
-        }
-        public void CreatePathFragments()
-        {
+
+            pathLenth = 0;
             foreach (BezierCurveData curveData in curveDatas)
             {
-                PathFragment fragment = new PathFragment();
-                fragment.curveData = curveData;
-                fragment.curveTotalLenth = curveData.GetApproximateLength((int)curveGranularity);
-                fragment.curvePointStart = curveData.GetPoint(0);
-                fragment.curvePointEnd = curveData.GetPoint(1);
-                fragment.pathHelper = CreatePathHelper();
-                fragment.pathHelper.position = transform.position + fragment.curvePointStart;
-                fragment.pathHelper.LookAt(transform.position + fragment.curvePointEnd);
-                fragment.right = fragment.pathHelper.right;
-                archorsRight.Add(fragment.right);
-                pathFragments.Add(fragment);
+                pathLenth += curveData.GetApproximateLength((int)curveGranularity);
+                Transform curveHelper = new GameObject("helper").transform;
+                curveHelper.transform.SetParent(transform);
+                curveHelper.position = transform.position + curveData.GetPoint(0);
+                curveHelper.LookAt(transform.position + curveData.GetPoint(1));
+                archors.Add(curveHelper);
+                archorsRight.Add(curveHelper.right);
             }
         }
         public void CreateLines()
@@ -177,7 +168,7 @@ namespace assets.OpenDriveReader
                 laneAttribute.totalWidth = totalWidth;
                 List<Point> points = new List<Point>();
                 float offset = totalWidth;
-                for (int i = 0; i < archors.Count; i++)
+                for (int i = 0; i < archorPoss.Count; i++)
                 {
                     Vector3 direction;
                     if (i >= archorsRight.Count)
@@ -188,7 +179,7 @@ namespace assets.OpenDriveReader
                     {
                         direction = archorsRight[i].normalized;
                     }
-                    points.Add(OpenDriveManager.Instance.map.AddPoint(OpenDriveManager.Instance.PointIndex.ToString(), archors[i] + direction * offset));
+                    points.Add(OpenDriveManager.Instance.map.AddPoint(OpenDriveManager.Instance.PointIndex.ToString(), archorPoss[i] + direction * offset));
                 }
                 Line line = OpenDriveManager.Instance.map.AddLine("Line" + OpenDriveManager.Instance.LineIndex.ToString());
                 line.points = points;
@@ -236,16 +227,5 @@ namespace assets.OpenDriveReader
             };
             return curve_data;
         }
-    }
-    [Serializable]
-    public class PathFragment
-    {
-        public Transform pathHelper;
-        public BezierCurveData curveData;
-        public float curveTotalLenth;
-        public Vector3 curvePointStart;
-        public Vector3 curvePointEnd;
-        public Vector3 right;
-        public List<Vector3> positions;
     }
 }

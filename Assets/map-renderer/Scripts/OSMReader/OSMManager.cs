@@ -12,6 +12,9 @@ namespace assets.OSMReader
     public class OSMManager : MonoBehaviour
     {
         public MapManager mapManager;
+        public static OSMManager Instance;
+        public bool isLongitude = false;
+
         OSMData oSMData;
         public void Start()
         {
@@ -19,6 +22,12 @@ namespace assets.OSMReader
             MapManager.Instance.OnGetOSM += ReadOSMWithStr;
         }
         public Map map;
+        private void Awake()
+        {
+            Instance = this;
+        }
+
+
 
         public void BuildMap(OSMData data)
         {
@@ -95,9 +104,12 @@ namespace assets.OSMReader
                         //map.AddSign(sign);
                         break;
                     case OSMWay.WayType.area:
-                        Area area = map.AddArea(way.ID.ToString());
-                        area.points = points;
-                        area.color = Color.yellow;
+                        if (way.OSMSubType == OSMWay.WaySubType.parking_spot)
+                        {
+                            Area area = map.AddArea(way.ID.ToString());
+                            area.points = points;
+                            area.color = Color.yellow;
+                        }
                         break;
                     case OSMWay.WayType.building:
                         Structure structure = map.AddStructrue(way.ID.ToString());
@@ -171,74 +183,13 @@ namespace assets.OSMReader
             foreach (XmlNode nodeNode in nodeXmlList)
             {
                 data.nodes.Add(new OsmNode(nodeNode));
-                //OsmNode node = new OsmNode();
-                //node.ID = int.Parse(nodeNode.Attributes["id"].Value);
-                //XmlNodeList tags = nodeNode.SelectNodes("tag");
-                //foreach (XmlNode nodeTag in tags)
-                //{
-                //    float value = float.Parse(nodeTag.Attributes["v"].Value);
-                //    switch (nodeTag.Attributes["k"].Value)
-                //    {
-                //        case "ele":
-                //            node.ele = value;
-                //            break;
-                //        case "local_x":
-                //            node.local_x = value;
-                //            break;
-                //        case "local_y":
-                //            node.Y = value;
-                //            break;
-                //        default:
-                //            break;
-                //    }
-                //}
-                //data.nodes.Add(node);
             }
 
             XmlNodeList wayXmlList = OSMNode.SelectNodes("way");
-
-            Debug.Log(wayXmlList.Count);
             foreach (XmlNode wayNode in wayXmlList)
             {
                 data.ways.Add(new OSMWay(wayNode));
             }
-            //XmlNodeList relationXmlList = OSMNode.SelectNodes("relation");
-
-            //foreach (XmlNode relationNode in relationXmlList)
-            //{
-            //    Relation relation = new Relation();
-            //    relation.ID = ulong.Parse(relationNode.Attributes["id"].Value);
-            //    XmlNodeList members = relationNode.SelectNodes("member");
-            //    foreach (XmlNode nodeMember in members)
-            //    {
-            //        Member member = new Member();
-            //        member.menberType = (Member.MemberType)Enum.Parse(typeof(Member.MemberType), nodeMember.Attributes["type"].Value);
-            //        member.refID = int.Parse(nodeMember.Attributes["ref"].Value);
-            //        if (nodeMember.Attributes["role"] != null)
-            //            member.roleType = (Member.RoleType)Enum.Parse(typeof(Member.RoleType), nodeMember.Attributes["role"].Value);
-            //        relation.menbers.Add(member);
-            //    }
-            //    XmlNodeList tags = relationNode.SelectNodes("tag");
-            //    foreach (XmlNode nodeTag in tags)
-            //    {
-            //        string value = nodeTag.Attributes["v"].Value;
-            //        switch (nodeTag.Attributes["k"].Value)
-            //        {
-            //            case "type":
-            //                relation.type = (Relation.RelationType)Enum.Parse(typeof(Relation.RelationType), value);
-            //                break;
-            //            case "subtype":
-            //                relation.subType = (Relation.RelationSubType)Enum.Parse(typeof(Relation.RelationSubType), value);
-            //                break;
-            //            case "turn_direction":
-            //                relation.turn_direction = (Relation.TurnDirection)Enum.Parse(typeof(Relation.TurnDirection), value);
-            //                break;
-            //            default:
-            //                break;
-            //        }
-            //    }
-            //    data.relations.Add(relation);
-            //}
 
             return data;
         }

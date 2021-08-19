@@ -11,9 +11,14 @@ public class RenderTest : MonoBehaviour
     public Button buttonRender;
     public InputField inputFieldPath;
     public InputField inputFieldURL;
+    public Text text;
     // Start is called before the first frame update
     void Start()
     {
+
+        //MapManager.Instance.OnGetOpenDrive += (string value)=> {
+        //    text.text = value;
+        //};
         inputFieldPath.onEndEdit.AddListener((string value) =>
         {
             path = Path.Combine(Application.streamingAssetsPath, value);
