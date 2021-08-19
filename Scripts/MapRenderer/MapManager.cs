@@ -13,7 +13,7 @@ namespace MapRenderer
 
         public Action<string> OnGetOSM;
 
-        public Action<string> OnGetOpenDrive;
+        public Action<byte[]> OnGetOpenDrive;
 
         public List<Map> mapList;
 
@@ -43,28 +43,40 @@ namespace MapRenderer
         }
         public IEnumerator GetDataFromURL(string url)
         {
-            UnityWebRequest www = UnityWebRequest.Get(url);
-            yield return www.SendWebRequest();
-            Debug.Log(www.uri);
-            if (www.result != UnityWebRequest.Result.Success)
+            if (url.EndsWith(".osm"))
             {
-                Debug.Log(www.error);
-            }
-            else
-            {
-                // Show results as text
-                string content = www.downloadHandler.text;
-                if (url.EndsWith(".osm")) 
+                Debug.Log("osm");
+                UnityWebRequest www = UnityWebRequest.Get(url);
+                yield return www.SendWebRequest();
+                if (www.result != UnityWebRequest.Result.Success)
                 {
-                    Debug.Log("osm");
-                    OnGetOSM.Invoke(content); 
+                    Debug.Log(www.error);
                 }
-                else if (url.EndsWith(".xodr"))
+                else
                 {
-                    Debug.Log("xodr");
+                    // Show results as text
+                    string content = www.downloadHandler.text;
+                    Debug.Log(content);
+                    OnGetOSM.Invoke(content);
+                }
+            }
+            else if (url.EndsWith(".xodr"))
+            {
+                Debug.Log("xodr");
+                UnityWebRequest www = UnityWebRequest.Get(url);
+                yield return www.SendWebRequest();
+                if (www.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.Log(www.error);
+                }
+                else
+                {
+                    // Show results as text
+                    byte[] content = www.downloadHandler.data;
                     OnGetOpenDrive.Invoke(content);
                 }
             }
+            
         }
     }
 
