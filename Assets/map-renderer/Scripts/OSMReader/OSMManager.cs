@@ -27,8 +27,6 @@ namespace assets.OSMReader
             Instance = this;
         }
 
-
-
         public void BuildMap(OSMData data)
         {
             if (data == null)

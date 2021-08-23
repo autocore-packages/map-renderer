@@ -17,6 +17,9 @@ namespace MapRenderer
 
         public List<Map> mapList;
 
+        public LineRenderer laneLR;
+        public Material laneMaterial;
+
         private void Awake()
         {
             Instance = this;
@@ -26,6 +29,41 @@ namespace MapRenderer
             {
                 mapList.Add(item);
             }
+        }
+        private void Start()
+        {
+            laneLR = new GameObject("LaneLR").AddComponent<LineRenderer>();
+            laneLR.transform.SetParent(transform);
+            laneLR.transform.rotation = Quaternion.Euler(90, 0, 0);
+            laneLR.alignment = LineAlignment.TransformZ;
+            laneLR.textureMode = LineTextureMode.Tile;
+            laneLR.material = laneMaterial;
+            laneLR.enabled = false;
+            //Vector3[] vector3s = new Vector3[5] 
+            //{ 
+            //    new Vector3(0,0,0),
+            //    new Vector3(0,0,10),
+            //    new Vector3(1,0,15),
+            //    new Vector3(2,0,16),
+            //    new Vector3(3,0,18)
+            //};
+            //ShowLane(vector3s);
+        }
+        public void ShowLane(Vector3[] poses)
+        {
+            laneLR.enabled = true;
+            laneLR.positionCount = poses.Length;
+            laneLR.SetPositions(poses);
+        }
+        public float offset;
+        private void Update()
+        {
+            if (laneLR.enabled)
+            {
+                offset -= Time.deltaTime * 0.5f;
+                laneMaterial.SetTextureOffset("_MainTex", new Vector2(offset, 0));
+            }
+            
         }
         public Map GetOrCreateMap(string mapName)
         {
