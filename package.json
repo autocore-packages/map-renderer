@@ -2,7 +2,7 @@
   "name": "com.autocore.map-renderer",
   "displayName": "map-renderer",
   "description": "renderer of cloudviewer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
   "dependencies": {
 
