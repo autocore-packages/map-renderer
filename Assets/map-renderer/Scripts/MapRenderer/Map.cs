@@ -23,9 +23,6 @@ namespace MapRenderer
         Material panelMaterial;
 
         GameObject goLine; 
-        Material LineMaterial;
-        Material LineStopMaterial;
-        Material LineLaneMaterial;
 
         GameObject goStructure;
 
@@ -162,6 +159,7 @@ namespace MapRenderer
         {
             points.Add(point);
             point.transform.SetParent(pointParent);
+            point.map = this;
             Elements.Add(point.name, point);
         }
         public Point AddPoint(string name, Vector3 pos)
@@ -199,6 +197,7 @@ namespace MapRenderer
             Elements.Add(line.name, line);
             line.transform.SetParent(lineParent);
             lines.Add(line);
+            line.map = this;
         }
         public Line AddLine(string name)
         {
@@ -234,6 +233,7 @@ namespace MapRenderer
             Elements.Add(area.name, area);
             area.transform.SetParent(AreaParent);
             areas.Add(area);
+            area.map = this;
         }
         public Area AddArea(string name)
         {
@@ -243,6 +243,18 @@ namespace MapRenderer
                 return null;
             }
             Area area = Instantiate(goArea).AddComponent<Area>();
+            area.name = name;
+            AddArea(area);
+            return area;
+        }
+        public Area_Lane AddArea_Lane(string name)
+        {
+            if (Elements.ContainsKey(name))
+            {
+                Debug.LogError("name 重复");
+                return null;
+            }
+            Area_Lane area = Instantiate(goArea).AddComponent<Area_Lane>();
             area.name = name;
             AddArea(area);
             return area;
@@ -257,6 +269,7 @@ namespace MapRenderer
             Elements.Add(sign.name, sign);
             sign.transform.SetParent(SignParent);
             signs.Add(sign);
+            sign.map = this;
         }
         public Sign AddSign(string name)
         {
@@ -291,6 +304,7 @@ namespace MapRenderer
             Elements.Add(structure.name, structure);
             structure.transform.SetParent(StructureParent);
             structures.Add(structure);
+            structure.map = this;
         }
         public Structure AddStructrue(string name)
         {
@@ -313,6 +327,7 @@ namespace MapRenderer
         {
             foreach (KeyValuePair<string, MapElement> item in Elements)
             {
+                if(item.Value!=null)
                 item.Value.ElementUpdateRenderer();
             }
         }

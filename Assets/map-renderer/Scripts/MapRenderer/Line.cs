@@ -7,7 +7,7 @@ namespace MapRenderer
     {
         public List<Point> points;
         public float lineWidth = 0.15f;
-        public Color color;
+        public Color lineColor;
 
         private LineRenderer lineRenderer;
 
@@ -25,8 +25,8 @@ namespace MapRenderer
             {
                 lineRenderer.SetPosition(i, points[i].position);
             }
-            elemenrMaterial.SetColor("_EmissionColor", color);
-            elemenrMaterial.color = color;
+            elemenrMaterial.SetColor("_EmissionColor", lineColor);
+            elemenrMaterial.color = lineColor;
             lineRenderer.material = elemenrMaterial;
         }
     }

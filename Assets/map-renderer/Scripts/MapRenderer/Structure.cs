@@ -27,11 +27,13 @@ namespace MapRenderer
             elemenrMaterial.DisableKeyword("_ALPHAPREMULTIPLY_ON");
             elemenrMaterial.renderQueue = 3000;
             elemenrMaterial.EnableKeyword("_EMISSION");
+            color.a = 0.5f;
+            elemenrMaterial.color = color;
+
+            elemenrMaterial.SetColor("_EmissionColor", color);
             mf = GetComponent<MeshFilter>();
             mr = GetComponent<MeshRenderer>();
 
-            elemenrMaterial.color = color;
-            elemenrMaterial.SetColor("_EmissionColor", color);
             mr.material = elemenrMaterial;
 
             List<Vector3> vectors = new List<Vector3>();

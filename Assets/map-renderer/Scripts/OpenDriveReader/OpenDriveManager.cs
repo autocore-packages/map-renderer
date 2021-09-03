@@ -9,7 +9,6 @@ using System.Xml.Serialization;
 using System.Text;
 using Schemas;
 using System.Linq;
-using UnityEditor.Playables;
 
 namespace assets.OpenDriveReader
 {
@@ -639,7 +638,7 @@ namespace assets.OpenDriveReader
             }
             Line line = map.AddLine("Line" + LineIndex.ToString());
             line.points = points;
-            line.color = mapLine.color;
+            line.lineColor = mapLine.color;
         }
 
         List<Vector3> UpdateReferencePoints(OpenDRIVERoadLanes lanes,
