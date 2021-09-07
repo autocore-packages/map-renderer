@@ -37,7 +37,6 @@ namespace assets.OSMReader
             map = mapManager.GetOrCreateMap(data.name);
             foreach (OsmNode node in data.nodes)
             {
-
                 map.AddPoint(node.ID.ToString(), new Vector3(node.local_x, node.Ele, node.local_y)) ;
             }
             foreach (OSMWay way in data.ways)
@@ -72,13 +71,13 @@ namespace assets.OSMReader
                     case OSMWay.WayType.line_thin:
                         Line line = map.AddLine(way.ID.ToString());
                         line.points = points;
-                        line.lineColor = Color.white;
-                        line.lineColor.a = 0.3f;
+                        line.color = Color.white;
+                        line.color.a = 0.3f;
                         break;
                     case OSMWay.WayType.stop_line:
                         Line_Stop line_stop = map.AddLine_Stop(way.ID.ToString());
                         line_stop.points = points;
-                        line_stop.lineColor = Color.red;
+                        line_stop.color = Color.red;
                         break;
                     case OSMWay.WayType.traffic_light:
                         Sign_TrafficLight sign_traffic = map.AddTrafficLight(way.ID.ToString());
@@ -111,23 +110,23 @@ namespace assets.OSMReader
                         {
                             Area area = map.AddArea(way.ID.ToString());
                             area.points = points;
-                            area.areaColor = Color.yellow;
+                            area.color = Color.yellow;
 
                             Line areLine = map.AddLine(way.ID.ToString() + "border");
                             areLine.points = points;
-                            areLine.lineColor = Color.white;
-                            areLine.lineColor.a = 0.4f;
+                            areLine.color = Color.white;
+                            areLine.color.a = 0.4f;
                         }
                         else if (way.OSMSubType == OSMWay.WaySubType.parking_access)
                         {
                             Area area = map.AddArea(way.ID.ToString());
                             area.points = points;
-                            area.areaColor = Color.green;
+                            area.color = Color.green;
 
                             Line areLine = map.AddLine(way.ID.ToString()+"border");
                             areLine.points = points;
-                            areLine.lineColor = Color.white;
-                            areLine.lineColor.a = 0.4f;
+                            areLine.color = Color.white;
+                            areLine.color.a = 0.4f;
                         }
                         break;
                     case OSMWay.WayType.building:
@@ -187,40 +186,40 @@ namespace assets.OSMReader
                                     }
                                 }
                             }
-                            area_Lane.lineColor = Color.green;
-                            area_Lane.lineColor.a = 0.2f;
+                            area_Lane.color = Color.green;
+                            area_Lane.color.a = 0.2f;
                         }
                         break;
                     case OSMRelation.RelationType.regulatory_element:
                         break;
                     case OSMRelation.RelationType.multipolygon:
-                        //if (relation.relationSubType == OSMRelation.RelationSubType.parking_spot)
-                        //{
-                        //    Area area = map.AddArea(relation.ID.ToString());
-                        //    foreach (Member member in relation.menbers)
-                        //    {
-                        //        if (member.roleType == Member.RoleType.outer)
-                        //        {
-                        //            if (map.Elements.TryGetValue(member.refID.ToString(), out MapElement mapElement))
-                        //            {
-                        //                if (mapElement is Line a)
-                        //                {
-                        //                    area.points.AddRange(a.points);
-                        //                }
-                        //                else
-                        //                {
-                        //                    Debug.Log(member.refID.ToString() + "not fond");
-                        //                }
-                        //            }
-                        //            else
-                        //            {
-                        //                Debug.Log(member.refID.ToString() + "not fond");
-                        //            }
-                        //        }
-                        //    }
-                        //    area.lineColor = Color.green;
-                        //    area.lineColor.a = 0.2f;
-                        //}
+                        if (relation.relationSubType == OSMRelation.RelationSubType.parking_spot)
+                        {
+                            Area area = map.AddArea(relation.ID.ToString()+"r");
+                            foreach (Member member in relation.menbers)
+                            {
+                                if (member.roleType == Member.RoleType.outer)
+                                {
+                                    if (map.Elements.TryGetValue(member.refID.ToString(), out MapElement mapElement))
+                                    {
+                                        if (mapElement is Line a)
+                                        {
+                                            area.points.AddRange(a.points);
+                                        }
+                                        else
+                                        {
+                                            Debug.Log(member.refID.ToString() + "not fond");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Debug.Log(member.refID.ToString() + "not fond");
+                                    }
+                                }
+                            }
+                            area.color = Color.green;
+                            area.color.a = 0.2f;
+                        }
                         break;
                     default:
                         break;
@@ -252,20 +251,6 @@ namespace assets.OSMReader
             map.UpdateRenderer();
             map.BuildComplete();
         }
-        //public void ReadOSMWithPath(string path, out OSMData data)
-        //{
-        //    if (File.Exists(path))
-        //    {
-        //        XmlDocument xml = new XmlDocument();
-        //        xml.Load(path);
-        //        ReadOSMWithXmlDoc(xml, out data);
-        //    }
-        //    else
-        //    {
-        //        data = null;
-        //        Debug.LogError("No Document");
-        //    }
-        //}
         public void ReadOSMWithStr(string xmlStr)
         {
             MapOrigin = MapOrigin.Find();

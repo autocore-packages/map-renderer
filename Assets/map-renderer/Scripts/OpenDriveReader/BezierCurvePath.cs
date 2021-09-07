@@ -186,13 +186,13 @@ namespace assets.OpenDriveReader
                 switch (laneAttribute.color)
                 {
                     case "yellow":
-                        line.lineColor = Color.yellow;
+                        line.color = Color.yellow;
                         break;
                     case "white":
-                        line.lineColor = Color.white;
+                        line.color = Color.white;
                         break;
                     case "red":
-                        line.lineColor = Color.red;
+                        line.color = Color.red;
                         break;
                     default:
                         break;

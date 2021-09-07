@@ -94,7 +94,6 @@ namespace MapRenderer
                 {
                     // Show results as text
                     string content = www.downloadHandler.text;
-                    Debug.Log(content);
                     OnGetOSM.Invoke(content);
                 }
             }

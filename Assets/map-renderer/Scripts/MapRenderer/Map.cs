@@ -239,7 +239,7 @@ namespace MapRenderer
         {
             if (Elements.ContainsKey(name))
             {
-                Debug.LogError("name 重复");
+                Debug.LogError(name+" name 重复");
                 return null;
             }
             Area area = Instantiate(goArea).AddComponent<Area>();

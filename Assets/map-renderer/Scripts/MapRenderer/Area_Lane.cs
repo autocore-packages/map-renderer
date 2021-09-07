@@ -29,9 +29,9 @@ namespace MapRenderer
             //elemenrMaterial.DisableKeyword("_ALPHAPREMULTIPLY_ON");
             //elemenrMaterial.renderQueue = 3000;
             //elemenrMaterial.EnableKeyword("_EMISSION");
-            lineColor.a =0.5f;
-            elemenrMaterial.color = lineColor;
-            elemenrMaterial.SetColor("_EmissionColor", lineColor);
+            color.a =0.5f;
+            elemenrMaterial.color = color;
+            elemenrMaterial.SetColor("_EmissionColor", color);
 
 
             _meshFilter = GetComponent<MeshFilter>();

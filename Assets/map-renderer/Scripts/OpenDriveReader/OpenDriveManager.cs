@@ -638,7 +638,7 @@ namespace assets.OpenDriveReader
             }
             Line line = map.AddLine("Line" + LineIndex.ToString());
             line.points = points;
-            line.lineColor = mapLine.color;
+            line.color = mapLine.color;
         }
 
         List<Vector3> UpdateReferencePoints(OpenDRIVERoadLanes lanes,

@@ -5,7 +5,6 @@ namespace MapRenderer
 {
     public class Area : Line
     {
-        public Color areaColor;
         protected List<int> indices;
         //顶点数组
         protected Vector3[] Vertexes;
@@ -28,9 +27,9 @@ namespace MapRenderer
             elemenrMaterial.DisableKeyword("_ALPHAPREMULTIPLY_ON");
             elemenrMaterial.renderQueue = 3000;
             elemenrMaterial.EnableKeyword("_EMISSION");
-            areaColor.a = 0.4f;
-            elemenrMaterial.color = areaColor;
-            elemenrMaterial.SetColor("_EmissionColor", areaColor);
+            color.a = 0.4f;
+            elemenrMaterial.color = color;
+            elemenrMaterial.SetColor("_EmissionColor", color);
 
             _meshFilter = GetComponent<MeshFilter>();
             _meshRenderer = GetComponent<MeshRenderer>();

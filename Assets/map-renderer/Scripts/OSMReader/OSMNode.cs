@@ -31,15 +31,6 @@ namespace assets.OSMReader
             ID = GetAttribute<long>("id", node.Attributes);
             Latitude = GetAttribute<float>("lat", node.Attributes);
             Longitude = GetAttribute<float>("lon", node.Attributes);
-
-            if (OSMManager.Instance.isLongitude)
-            {
-                UTMUPS_Forward(Latitude, Longitude, out int zone, out bool northp, out double x, out double y);
-                x %= 1e5;
-                y %= 1e5;
-                local_x = (float)x;
-                local_y = (float)y;
-            }
             ReadTags(node);
 
             foreach (Tag tag in Tags)

@@ -1206,7 +1206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8488c99617abeeb4daa8b6f6a603eab9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  path: C:/Users/10045/Documents/UnityProjects/map-renderer/Assets/StreamingAssets\autonomoustuff_parking_lot.osm
+  path: C:/Users/10045/Documents/UnityProjects/map-renderer/Assets/StreamingAssets\osm.osm
   buttonRender: {fileID: 2098962786}
   inputFieldPath: {fileID: 1180737214}
   inputFieldURL: {fileID: 254160972}

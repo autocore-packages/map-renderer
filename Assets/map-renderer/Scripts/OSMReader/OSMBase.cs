@@ -61,19 +61,6 @@ namespace assets.OSMReader
             foreach (XmlNode t in tags)
             {
                 Tag tag = new Tag(GetAttribute<string>("k", t.Attributes), GetAttribute<string>("v", t.Attributes));
-                //string key = GetAttribute<string>("k", t.Attributes);
-                //if (key == "ele")
-                //{
-                //    ele = GetAttribute<float>("v", t.Attributes);
-                //}
-                //else if (key == "local_x")
-                //{
-                //    local_x = GetAttribute<float>("v", t.Attributes);
-                //}
-                //else if (key == "local_y")
-                //{
-                //    local_y = GetAttribute<float>("v", t.Attributes);
-
                 Tags.Add(tag);
             }
         }
